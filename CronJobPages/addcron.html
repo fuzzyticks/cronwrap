@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+	<html lang="en">
+		<head>
+		  <title>CronJob Scheduling and Performance Analysis</title>
+		  <meta charset="utf-8">
+		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		  <link rel="stylesheet" href="css/bootstrap.min.css">
+		  
+		  <script src="js/jquery-1.11.3.min.js"></script>
+		  <script src="js/bootstrap.min.js"></script>
+		  <script type="text/javascript">
+		       var cmin, chour, cday, cmonth, cweekday;
+		    		  		function verifyinputs() {
+
+								if ($("#hostnames").val() == "") {
+								   $("#message").html("!!! Please provide valid hostname");
+								   alert("!!Provide hostname");
+								   return 0;
+								 }
+								if ($("#cronjob").val() == "" ) {
+								   $("#message").html("!!! Please cronjob");
+								   alert("!!Provide cronjob");
+								   return 0;
+								}
+
+								if ($("#userid").val() == "" ) {
+								   $("#message").html("!!! Please userid");
+								   alert("!!Provide userid");
+								   return 0;
+								}
+								
+								if ($("#minutes").val() == "") {
+									cmin = $("#min").val()
+								}
+								else {
+									cmin = $("#minutes").val()
+								}
+								
+								if ($("#hours").val() == "") {
+									chour = $("#hour").val()
+								}
+								else {
+									chour = $("#hours").val()
+								}
+								
+								if ($("#days").val() == "") {
+									cday = $("#day").val()
+								}
+								else {
+									cday = $("#days").val()
+								}
+								
+								if ($("#months").val() == "") {
+									cmonth = $("#month").val()
+								}
+								else {
+									cmonth = $("#months").val()
+								}
+								
+								if ($("#weekdays").val() == "") {
+									cweekday = $("#weekday").val()
+								}
+								else {
+									cweekday = $("#weekdays").val()
+								}
+					  		
+					  			$("#message").html( $("#min").val() + " " + $("#hour").val() + " " + $("#day").val() + " " + $("#month").val() + 
+								  " " + $("#weekday").val() + " -->DropDown\n" )
+					  			$("#message").append("# Cron Entry will be : \n")	
+								$("#message").append( cmin + " " + chour + " " + cday + " " + cmonth + " " + cweekday + " " + 
+								  "cronwrap" + " " + $("#cronjob").val())
+								
+								$("#addcron").prop('disabled', false);		  			
+					  			
+					  			$(this).css({'color':'red'});
+		  			
+		  		      }
+		  		
+				  		function addcrons() {
+						  alert("Sending add cron request");
+                                          	  $.post("/addcron",  {hostnames: $("#hostnames").val(), userid: $("#userid").val(), cronjob: $("#cronjob").val(), 
+                                          	        cjmin: cmin, cjhour: chour, cjday: cday, cjmonth: cmonth, cjweekday: cweekday})
+                                                   .done(function (data) {
+                                                        $("#message").html(data)
+                                                   });				  				
+				  		}
+				  		
+				  		
+		  </script>
+		</head>
+		<body>
+		  <div class="navbar navbar-inverse navbar-static-top">
+				<div class="container">
+					<p class="navbar-brand">CronJob Scheduling and Performance Analysis</p>
+					<button class="navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					</button>
+					<div class="collapse navbar-collapse navHeaderCollapse"> 
+					  <ul class="nav navbar-nav navbar-right">
+					    <li><a href="/addcron.html">AddCron</a></li>
+					    <li><a href="/removecron.html">RemoveCron</a></li>
+					    <li><a href="/analyse.html">Search & Analyse</a></li>
+					    <li><a href="/alert.html">Alert</a></li>
+					  </ul>
+				  </div>			
+			  </div>
+		  </div>
+
+       <div class="container">
+         <div class="well well-sm">
+				<h3>Add your cron</h3>
+				<p>
+					<ul>
+							<li> [1] Provide list of Hostnames, where you want to add the cron.</li>
+							<li> [2] Provide cron details with absolute path of file (Please ensure file has execuatble permission).</li>
+							<li> [3] Provide Userid for which cron need's to be set on the host (Please ensure user exist</li>
+							<li> [4] Select cron schedule details. (Define own time or Select from standard options)</li>
+							<li> [5] Verify the cron entry and submit.</li>
+					</ul>				
+				</p>       
+          </div>
+        </div>
+        
+       <div class="container">
+       	<form>
+			  <div class="form-group">
+			    <label for="hostnames">Hostnames (Comma seprated)</label>
+			    <input type="text" class="form-control" id="hostnames" placeholder="host1.example.com,host2.example.com,..."> <br/>
+			    <label for="cronjob">Cronjob (With absolute path)</label>
+			    <input type="text" class="form-control" id="cronjob" placeholder="foo.py arg1 arg2 > /tmp/test.txt"> <br/>
+			    <label for="userid">Userid (Must be valid / exist on hosts)</label></br>
+             <input type="text" class="form-control" id="userid" placeholder="foobar"> <br/>
+			    
+			     <label>Select cronjob schedule from few use case or Input own schedule</label></br>
+
+					<div class="row">
+		            	<div class="heads">
+			            	<div class="container">
+							<div class="col-md-2">
+								Minutes
+							</div>
+							<div class="col-md-2">
+								Hour
+							</div>
+							<div class="col-md-2">
+								Day Of Month
+							</div>
+							<div class="col-md-2">
+								Month
+							</div>
+							<div class="col-md-2">
+								Day Of Week
+							</div>
+		                    </div>
+						</div>
+		    		</div>
+            
+            
+             <div class="row">
+	            <div class="even">
+                	<div class="container">
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="minutes"  placeholder="Every min">
+					</div>
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="hours" placeholder="Every hour">
+					</div>
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="days" placeholder="Every Day of Month">
+					</div>
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="months" placeholder="Every Month">
+					</div>
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="weekdays" placeholder="Monday">
+					</div>
+                    </div>
+				</div>
+            </div>
+            
+            <div class="row">
+            <div class="odd">
+            	<div class="container">
+			<div class="col-md-2">
+						<select class="form-control" name="min" id="min" >
+                         	   <option value="1">On 1st min</option>
+                          	<option value="2">On 2nd min</option>
+                          	<option value="5">On 5th min</option>
+                          	<option value="10">On 10th min</option>
+                          	<option value="15">On 15th min</option>
+                          	<option value="20">On 20th min</option>
+                          	<option value="25">On 25th min</option>
+                          	<option value="30">On 30th min</option>
+                          	<option value="35">On 35th min</option>
+                          	<option value="40">On 40th min</option>
+                          	<option value="45">On 45th min</option>
+                          	<option value="50">On 50th min</option>
+                          	<option value="55">On 55th min</option>
+                     </select>
+					</div>
+					
+					<div class="col-md-2">
+						<select class="form-control" name="hour" id="hour" >
+                         	<option value="0" >At 12AM</option>
+                         	<option value="1">At 1AM</option>
+                          <option value="2">At 2AM</option>
+                          <option value="3">At 3AM</option>
+                          <option value="4">At 4AM</option>
+                          <option value="5">At 5AM</option>
+                          <option value="6">At 6AM</option>
+                          <option value="7">At 7AM</option>
+                          <option value="8">At 8AM</option>
+                          <option value="9">At 9AM</option>
+                          <option value="10">At 10AM</option>
+                          <option value="11">At 11AM</option>
+                          <option value="12">At 12PM</option>
+                          <option value="13">At 1PM</option>
+                          <option value="14">At 2PM</option>
+                          <option value="15">At 3PM</option>
+                          <option value="16">At 4PM</option>
+                          <option value="17">At 5PM</option>
+                          <option value="18">At 6PM</option>
+                          <option value="19">At 7PM</option>
+                          <option value="20">At 8PM</option>
+                          <option value="21">At 9PM</option>
+                          <option value="22">At 10PM</option>
+                          <option value="23">At 11PM</option>
+                     </select>
+					</div>
+					
+					<div class="col-md-2">
+						<select class="form-control" name="day" id="day">
+								 <option value="*">Everyday</option>
+                         	 <option value="1">1st day</option>
+                          <option value="2">2nd day</option>
+                          <option value="5">5th day</option>
+                          <option value="10">10th day</option>
+                          <option value="15">15th day</option>
+                          <option value="20">20th day</option>
+                          <option value="25">25th day</option>
+                     </select> 
+					</div>
+					
+					<div class="col-md-2">
+						<select class="form-control" name="month" id="month">
+									<option value="*">Every Month</option>
+                          	<option value="1">in January</option>
+                          	<option value="2">in Febuary</option>
+                          	<option value="3">in March</option>
+                          	<option value="4">in April</option>
+                          	<option value="5">in May</option>
+                          	<option value="6">in June</option>
+                          	<option value="7">in July</option>
+                          	<option value="8">in August</option>
+                          	<option value="9">in September</option>
+                          	<option value="10">in October</option>
+                          	<option value="11">in November</option>
+                          	<option value="12">in December</option>
+                     </select>
+					</div>
+					
+					<div class="col-md-2">
+						<select class="form-control" name="weekday" id="weekday">
+						       <option value="*">All weekdays</option>
+                         	<option value="0">Only on Sunday's</option>
+                          <option value="1">Only on Monday's</option>
+                          <option value="2">Only on Tuesday's</option>
+                          <option value="3">Only on Wednesday's</option>
+                          <option value="4">Only on Thursday's</option>
+                          <option value="5">Only on Friday's</option>
+                          <option value="6">Only on Saturday's</option>
+                     	</select>
+					</div>
+					
+              </div>
+				</div>
+            </div>
+             <br/>
+             <button type="button" class="form-control btn btn-primary" id="verify" onclick="verifyinputs()"> Check and Verify </button><br/><br/>
+             <label for="cronentry">Message (Cron entry or Error)</label><br />
+             <textarea class="form-control" rows="3" id="message" readonly></textarea><br /><br />
+             <button type="button" class="form-control btn btn-primary" id="addcron" onclick="addcrons()" disabled> Add cron </button> <br/>
+			    
+			  </div>
+			  </form>
+       </div>
+		</body>
+		</html>

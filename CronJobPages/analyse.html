@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+	<html lang="en">
+		<head>
+		  <title>CronJob Scheduling and Performance Analysis</title>
+		  <meta charset="utf-8">
+		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		  <link rel="stylesheet" href="css/bootstrap.min.css">
+		  <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+		  
+		  <script src="js/jquery-1.12.0.min.js"></script>
+		  <script src="js/bootstrap.min.js"></script>
+		  <script src="js/jquery.dataTables.min.js"></script>
+		  
+
+		  <script>
+				//$(document).ready(
+				function getresults() {
+					var es_url
+					var es_query = $("#searchq").val()
+
+					if (es_query == "") {
+					     //es_url = "http://192.168.56.101:5000/esjson"
+					     es_url = "esjson"
+					  }
+					else {
+					     //es_url = "http://192.168.56.101:5000/esjson/" + es_query
+					     es_url = "esjson/" + es_query
+					  }
+
+					$.getJSON(es_url, function(datas) { $('#cron_data_table').DataTable({
+						"pageLength": 10,
+						"data": datas,
+						"columns": [
+						{ "title": "userid", "data": "userid"},
+						{ "title": "hostname", "data": "hostname"},
+						{ "title": "cmd", "data": "cmd"},
+					        { "title": "cpu", "data": "cpu"},
+						{ "title": "page_fault", "data": "page_fault"},
+						{ "title": "mas_rss", "data": "max_rss"},
+						{ "title": "start_time", "data": "start_time"},
+						{ "title": "end_time", "data": "end_time"},
+						{ "title": "exit_status", "data": "exit_status"},
+						{ "title": "ert", "data": "ert"},
+					        ],
+						"destroy": true,
+					})
+				  })
+				}
+		  </script>		  
+		  
+		  
+		</head>
+		<body>
+		  <div class="navbar navbar-inverse navbar-static-top">
+				<div class="container">
+					<p class="navbar-brand">CronJob Scheduling and Performance Analysis</p>
+					<button class="navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					</button>
+					<div class="collapse navbar-collapse navHeaderCollapse"> 
+					  <ul class="nav navbar-nav navbar-right">
+					    <li><a href="/addcron.html">AddCron</a></li>
+					    <li><a href="/removecron.html">RemoveCron</a></li>
+					    <li><a href="/analyse.html">Search & Analyse</a></li>
+					    <li><a href="/alert.html">Alert</a></li>
+					  </ul>
+				  </div>			
+			  </div>
+		  </div>
+		  
+       <div class="container">
+         <div class="well well-sm">
+				<h3>Search and Analyse crons</h3>
+				<p>
+					<ul>
+							<li> [1] Search using Hostname Or Userid Or Date Or Cronjob</li>
+							<li> [2] Get results</li>
+							<li> [3] Analyse</li>
+					</ul>				
+				</p>
+			</div>
+       </div>
+       
+       <div class="container">
+       	<form>
+			  <div class="form-group">
+			    <label for="searchq">Search Query</label>
+			    <input type="text" class="form-control" id="searchq" placeholder="host1.example.com Or foonix Or 2016/02/10"> <br/>
+			    <button type="button" class="form-control btn btn-primary" id="verify" onclick="getresults()"> Get Results</button><br/><br/>
+              
+			  </div>
+			 </form> 
+       </div>
+       <div class="container">
+          <table id='cron_data_table' class="display"> </table>	
+       </div>
+		</body>
+  </html>

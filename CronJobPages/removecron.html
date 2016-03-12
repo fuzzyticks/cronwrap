@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+	<html lang="en">
+		<head>
+		  <title>CronJob Scheduling and Performance Analysis</title>
+		  <meta charset="utf-8">
+		  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		  <link rel="stylesheet" href="css/bootstrap.min.css">
+		  <script src="js/jquery-1.11.3.min.js"></script>
+		  <script src="js/bootstrap.min.js"></script>
+		  <script type="text/javascript">
+		    function getCronList() {
+		    			  $.post("/cronlist",  {hostname: document.getElementById("hostnames").value, userid: document.getElementById("userid").value})
+		    			        .done(function (data) {
+							  //console.log(typeof(JSON.parse('"BODY":' + data + '}' )));
+							  //var cronli = '"BODY":' + data + '}'
+							if (data == "false")
+							  $("#message").html("No crons found, Please check again the hostname or userid provided!!! ") 
+							else {
+							  var cronlist = JSON.parse(data);
+		    			        	  //alert("data loaded :- " + cronlist[1].cmd)
+							  $('#cronjoblist').html('<option value="" disabled selected>Select cron to delete....</option>');
+		     					  $.each(cronlist, function() {
+                       					   $('#cronjoblist').append('<option>' + this.cmd + '</option>');
+                       					  });
+							  $("#removecron").prop('disabled', false);
+							  $("#message").html("Cronlist populated, please select the required cron to delete.")
+							}
+
+						//var options = $("#cronjoblist");
+						//$.each(data, function() {
+    						//	options.append($("<option />").val(this).text(this));
+						// });
+					        //$('#cronlist').append('<p> DATA -: ' + data + '</p>');	
+						
+		    			        });
+		    			  }
+		    
+		    function deleteCron() {
+					if ($("#cronjoblist option:selected").index() == 0) {
+					    $("#message").html("No Cronjob Selected, Please select cron to be deleted")
+					    alert(" Please select Cronjob ")
+					 }
+				        else {
+					    //alert("Selected cron is " + $("#cronjoblist option:selected").val())
+                                          $.post("/deletecron",  {hostname: document.getElementById("hostnames").value, userid: document.getElementById("userid").value, 
+					    	cronjob: $("#cronjoblist option:selected").val()})
+                                                .done(function (data) {
+						 //var cronlist = JSON.parse(data)
+						 //alert("Response" + data)
+						  $("#message").html("!!! Response -: " + data)
+					  });
+					}	
+		    }
+		    
+		  </script>
+		</head>
+		<body>
+		  <div class="navbar navbar-inverse navbar-static-top">
+				<div class="container">
+					<p class="navbar-brand">CronJob Scheduling and Performance Analysis</p>
+					<button class="navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					  <span class="icon-bar"></span>
+					</button>
+					<div class="collapse navbar-collapse navHeaderCollapse"> 
+					  <ul class="nav navbar-nav navbar-right">
+					    <li><a href="/addcron.html">AddCron</a></li>
+					    <li><a href="/removecron.html">RemoveCron</a></li>
+					    <li><a href="/analyse.html">Search & Analyse</a></li>
+					    <li><a href="/alert.html">Alert</a></li>
+					  </ul>
+				  </div>			
+			  </div>
+		  </div>
+		  
+       <div class="container">
+         <div class="well well-sm">
+				<h3>Remove cron</h3>
+				<p>
+					<ul>
+							<li> [1] Provide hostname (to remove the cron from).</li>
+							<li> [2] Get crons list from the host</li>
+							<li> [3] Verify & Select the cron to be delete and submit.</li>
+					</ul>				
+				</p>
+			</div>
+       </div>
+       
+       <div class="container">
+       	<form action="removecron.html" method="post">
+			  <div class="form-group">
+			    <label for="hostnames">Hostname</label>
+			    <input type="text" class="form-control" id="hostnames" placeholder="host1.example.com"> <br/>
+			    <label for="userid">UserId</label>
+			    <input type="text" class="form-control" id="userid" placeholder="foobar"> <br/>
+			    <button type="button" class="form-control btn btn-primary" id="verify" onclick="getCronList()"> Get Cron list from host </button><br/><br/>
+			    <label for="cronjob">Select cronjob to be removed</label>
+			   <select class="form-control" id="cronjoblist">
+               		   </select>
+              <br />
+              <br />
+              <button type="button" class="form-control btn btn-primary" id="removecron" value="removecron" onclick="deleteCron()" disabled> Delete selected cron </button><br/>
+              
+			  </div></br></br>
+			<textarea class="form-control" rows="2" id="message" readonly></textarea><br /><br />
+			 </form> 
+       </div>
+		</body>
+  </html>

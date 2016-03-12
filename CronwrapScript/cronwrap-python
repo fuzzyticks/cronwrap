@@ -1,0 +1,73 @@
+#!/usr/bin/python2.7
+
+import os
+import sys
+import json
+import requests
+import subprocess as sub
+from datetime import datetime
+
+es_url = 'http://192.168.56.1:9200/crondb/cronwrap/'
+
+## Getting Command along with its arguments passed to cronwrap
+fullCommand = ' '.join(sys.argv[2:])
+
+## Preparing First insert to Elasticsearch, when cronjob is about to initiate.
+esquery={}
+esquery['hostname'] = os.uname()[1]
+esquery['start_time'] = datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+esquery['userid'] = os.getlogin()
+esquery['cmd'] = ' '.join(sys.argv[1:])
+esquery['cpu'] = ''
+esquery['ert'] = ''
+esquery['max_rss'] = ''
+esquery['exit_status'] = ''
+esquery['page_fault'] = ''
+esquery['end_time'] = '0'
+
+
+## Inserting initial data to elasticsearch.
+sj = json.dumps(esquery)
+res = requests.post(es_url, data=sj)
+id=json.loads(res.content)
+insertID=id['_id']
+
+## Preparing time command format
+# defining time outout file and making others writable to avoid permission issue with next cronwrap run of other job
+time_of = '/tmp/' + str(os.getpid())
+
+# creating time command along with output format
+time_cmd = '/usr/bin/time'
+
+#time_format = '{"cpu":"%P", "ert":"%e", "max_rss":"%M", "exit_status":"%x", "page_fault":"%R", "end_time":'
+time_format = '%P %e %M %x %R'
+cmd = [time_cmd, '-f', time_format, '-o', time_of] + sys.argv[1:]
+
+# Executing cronjob and collect metrics
+p1 = sub.Popen(cmd, stdout=sub.PIPE, stderr=sub.PIPE)
+result = p1.communicate()
+print(p1.returncode)
+line = sub.check_output(['tail', '-1', time_of])[0:-1].split()
+print(line)
+
+# print("cpu -: " + list[0][0:-1])
+# Tackling % sign from output of cpu in time #
+
+if line[0] == '?%':
+  esquery['cpu'] = 0
+else:
+  esquery['cpu'] = line[0][0:-1]
+
+esquery['ert'] = line[1]
+esquery['max_rss'] = line[2]
+esquery['exit_status'] = line[3]
+esquery['page_fault'] = line[4]
+esquery['end_time'] = str(datetime.now().strftime('%Y/%m/%d %H:%M:%S'))
+print(esquery)
+
+sj = json.dumps(esquery)
+print(sj)
+print(es_url + insertID + '/_update')
+res = requests.post('http://192.168.56.1:9200/crondb/cronwrap/'+ insertID + '/_update', data = '{"doc":' + sj + '}')
+print(insertID)
+print(res.status_code)
