@@ -1,5 +1,4 @@
 #Cronjob Scheduling and Performance Analysis
--------------------------------------------
 
 Handling cronjobs become tedious task as number of hosts and crons increases. Possibility of human error arise while adding/removing cronjobs. For adding and removing one has to ssh to the hosts or run some remote execution script based on ssh to set cronjobs on the host, which is not easy to tackle.
 
