@@ -1,6 +1,4 @@
-# cronwrap
-
-Cronjob Scheduling and Performance Analysis
+#Cronjob Scheduling and Performance Analysis
 -------------------------------------------
 
 Handling cronjobs become tedious task as number of hosts and crons increases. Possibility of human error arise while adding/removing cronjobs. For adding and removing one has to ssh to the hosts or run some remote execution script based on ssh to set cronjobs on the host, which is not easy to tackle.
@@ -43,4 +41,4 @@ Assumptions -:
 	     - cmd.has_exec
 	     - cron.*
 
-Note -: System is not complete, and not at all safe for any running environment yet, Its jsut an attempt to provide a working model, It can be improved further and more things can be incorporate easily (Like developing recommendation service, which can suggest time slots for running a job based on collected data in elastic, we can visualize metrics using kibana or other tools, wrapper script can freely be used for capturing any job/command (either executing through crond or directly by user) etc etc....
+Note -: System is not complete, and not at all safe for any running environment yet, It is just an attempt to provide a working model, It can be improved further and more things can be incorporate easily (Like developing recommendation service, which can suggest time slots for running a job based on collected data in elastic, we can visualize metrics using kibana or other tools, wrapper script can freely be used for capturing any job/command (either executing through crond or directly by user) etc etc....
