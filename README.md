@@ -1,4 +1,4 @@
-#Cronjob Scheduling and Performance Analysis
+#Cronjob Scheduling, Performance Analysis and Alerting system
 
 Handling cronjobs become tedious task as number of hosts and crons increases. Possibility of human error arise while adding/removing cronjobs. For adding and removing one has to ssh to the hosts or run some remote execution script based on ssh to set cronjobs on the host, which is not easy to tackle.
 
@@ -8,7 +8,7 @@ System is designed over existing known and free and open source technologies, li
 
 Scope -:
 
-- Simple web interface to Add / Remove / Search and Analyse crons scheduled on multiple hosts, using an existing saltstack infrastructure.
+- Simple web interface to Add / Remove / Search and Analyse / Alert (Stuck jobs) cronjobs, which are scheduled on multiple hosts, using an existing saltstack infrastructure.
 - To capture all performance metrics for any cronjob on all hosts. Metrics like start time, end time, cpu usage, mem usage, page faults, exit status by crons.
 - Data analysis based on user, time taken, start/end time, hosts, exit status, cpu usage, memory usage, page faults and hostname.
 
