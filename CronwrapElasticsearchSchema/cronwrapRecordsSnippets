@@ -1,0 +1,124 @@
+GET /crondb/cronwrap/_search
+{
+   "took": 5,
+   "timed_out": false,
+   "_shards": {
+      "total": 5,
+      "successful": 5,
+      "failed": 0
+   },
+   "hits": {
+      "total": 6,
+      "max_score": 1,
+      "hits": [
+         {
+            "_index": "crondb",
+            "_type": "cronwrap",
+            "_id": "AVLo5zNHMR5l5TyMFzQS",
+            "_score": 1,
+            "_source": {
+               "ert": "3.46",
+               "hostname": "foonix2",
+               "exit_status": "0",
+               "start_time": "2016/02/16 12:36:52",
+               "cmd": "/home/himanshu/findMersenneNumber",
+               "userid": "himanshu",
+               "page_fault": "1028",
+               "max_rss": "3056",
+               "end_time": "2016/02/16 12:36:55",
+               "cpu": "99"
+            }
+         },
+         {
+            "_index": "crondb",
+            "_type": "cronwrap",
+            "_id": "AVLpIGgYMR5l5TyMFzQa",
+            "_score": 1,
+            "_source": {
+               "ert": "0.10",
+               "hostname": "foonix2",
+               "exit_status": "0",
+               "start_time": "2016/02/16 13:39:21",
+               "cmd": "/home/himanshu/findSinOfN",
+               "userid": "himanshu",
+               "page_fault": "423",
+               "max_rss": "3128",
+               "end_time": "2016/02/16 13:39:21",
+               "cpu": "97"
+            }
+         },
+         {
+            "_index": "crondb",
+            "_type": "cronwrap",
+            "_id": "AVLo6YLKMR5l5TyMFzQU",
+            "_score": 1,
+            "_source": {
+               "ert": "148.10",
+               "hostname": "foonix2",
+               "exit_status": "0",
+               "start_time": "2016/02/16 12:39:23",
+               "cmd": "/home/himanshu/findMersenneNumber",
+               "userid": "himanshu",
+               "page_fault": "13223",
+               "max_rss": "16600",
+               "end_time": "2016/02/16 12:41:51",
+               "cpu": "99"
+            }
+         },
+         {
+            "_index": "crondb",
+            "_type": "cronwrap",
+            "_id": "AVLo6Vk_MR5l5TyMFzQT",
+            "_score": 1,
+            "_source": {
+               "ert": "0.08",
+               "hostname": "foonix2",
+               "exit_status": "0",
+               "start_time": "2016/02/16 12:39:12",
+               "cmd": "/home/himanshu/findMersenneNumber",
+               "userid": "himanshu",
+               "page_fault": "407",
+               "max_rss": "3052",
+               "end_time": "2016/02/16 12:39:12",
+               "cpu": "96"
+            }
+         },
+         {
+            "_index": "crondb",
+            "_type": "cronwrap",
+            "_id": "AVLo75VVMR5l5TyMFzQX",
+            "_score": 1,
+            "_source": {
+               "ert": "40.92",
+               "hostname": "foonix2",
+               "exit_status": "0",
+               "start_time": "2016/02/16 12:46:01",
+               "cmd": "/home/himanshu/findLogOfN",
+               "userid": "himanshu",
+               "page_fault": "414",
+               "max_rss": "3104",
+               "end_time": "2016/02/16 12:46:42",
+               "cpu": "99"
+            }
+         },
+         {
+            "_index": "crondb",
+            "_type": "cronwrap",
+            "_id": "AVLpIctcMR5l5TyMFzQb",
+            "_score": 1,
+            "_source": {
+               "ert": "10.00",
+               "hostname": "foonix2",
+               "exit_status": "0",
+               "start_time": "2016/02/16 13:40:52",
+               "cmd": "sleep 10",
+               "userid": "himanshu",
+               "page_fault": "83",
+               "max_rss": "1908",
+               "end_time": "2016/02/16 13:41:02",
+               "cpu": "0"
+            }
+         }
+      ]
+   }
+}
